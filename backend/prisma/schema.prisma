@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+  role     String
+  province String
+
+  createdAt DateTime @default(now())
+
+  groups     Group[]
+  messages   Message[]
+  ratings    Rating[]
+  favorites  Favorite[]
+
+  rideRequests RideRequest[] @relation("ClientRequests")
+  acceptedRides RideRequest[] @relation("DriverRequests")
+}
+
+model Group {
+  id Int @id @default(autoincrement())
+
+  name        String
+  description String
+  province    String
+  district    String?
+  region      String?
+
+  onlineDrivers Int
+  price         Int
+  type          String
+
+  createdAt DateTime @default(now())
+
+  ownerId Int
+
+  owner User @relation(fields: [ownerId], references: [id])
+
+  messages Message[]
+  ratings Rating[]
+  favorites Favorite[]
+
+  rideRequests RideRequest[]
+}
+
+model Rating {
+  id Int @id @default(autoincrement())
+
+  value Int
+
+  userId  Int
+  groupId Int
+
+  user  User  @relation(fields: [userId], references: [id])
+  group Group @relation(fields: [groupId], references: [id])
+
+  @@unique([userId, groupId])
+}
+
+model Message {
+  id Int @id @default(autoincrement())
+
+  content String
+
+  createdAt DateTime @default(now())
+
+  userId Int
+
+  groupId Int
+
+  user User @relation(fields: [userId], references: [id])
+
+  group Group @relation(fields: [groupId], references: [id])
+}
+
+model Favorite {
+  id Int @id @default(autoincrement())
+
+  userId  Int
+  groupId Int
+
+  user  User  @relation(fields: [userId], references: [id])
+  group Group @relation(fields: [groupId], references: [id])
+
+  @@unique([userId, groupId])
+}
+
+model RideRequest {
+  id Int @id @default(autoincrement())
+
+  description String
+
+  status String
+
+  createdAt DateTime @default(now())
+
+  clientId Int
+
+  groupId Int
+
+  driverId Int?
+
+  client User @relation("ClientRequests", fields: [clientId], references: [id])
+
+  driver User? @relation("DriverRequests", fields: [driverId], references: [id])
+
+  group Group @relation(fields: [groupId], references: [id])
+}
