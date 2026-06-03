@@ -67,7 +67,7 @@ const [requestDescription,
   async function loadMessages() {
     const response =
       await axios.get(
-        `http://localhost:3001/messages/group/${groupId}`,
+        `https://taxilink.onrender.com/messages/group/${groupId}`,
       );
 
     setMessages(response.data);
@@ -122,7 +122,7 @@ loadGroupRating();
     localStorage.getItem('token');
 
   await axios.post(
-    'http://localhost:3001/messages',
+    'https://taxilink.onrender.com/messages',
     {
       content: message,
       groupId: Number(groupId),
@@ -146,7 +146,7 @@ loadGroupRating();
     localStorage.getItem('token');
 
   await axios.post(
-    'http://localhost:3001/ratings',
+    'https://taxilink.onrender.com/ratings',
     {
       groupId: Number(groupId),
       value,
@@ -199,7 +199,7 @@ async function loadGroupRating() {
 async function loadRideRequests() {
   const response =
     await axios.get(
-      `http://localhost:3001/ride-requests/group/${groupId}`,
+      `https://taxilink.onrender.com/ride-requests/group/${groupId}`,
     );
 
   setRideRequests(response.data);
@@ -211,7 +211,7 @@ async function createRideRequest() {
     localStorage.getItem('token');
 
   await axios.post(
-    'http://localhost:3001/ride-requests',
+    'https://taxilink.onrender.com/ride-requests',
     {
       description:
         requestDescription,
@@ -240,7 +240,7 @@ async function acceptRideRequest(
     localStorage.getItem('token');
 
   await axios.post(
-    `http://localhost:3001/ride-requests/${requestId}/accept`,
+    `https://taxilink.onrender.com/ride-requests/${requestId}/accept`,
     {},
     {
       headers: {
@@ -265,7 +265,7 @@ async function finishRideRequest(
 }
 
   await axios.post(
-    `http://localhost:3001/ride-requests/${requestId}/finish`,
+    `https://taxilink.onrender.com/ride-requests/${requestId}/finish`,
     {},
     {
       headers: {

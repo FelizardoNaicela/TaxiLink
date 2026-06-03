@@ -25,7 +25,7 @@ export async function createGroup(
 
   const response =
     await axios.post(
-      'http://localhost:3001/groups',
+      'https://taxilink.onrender.com/groups',
       data,
       {
         headers: {

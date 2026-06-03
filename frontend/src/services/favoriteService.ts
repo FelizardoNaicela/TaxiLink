@@ -8,7 +8,7 @@ export async function toggleFavorite(
 
   const response =
     await axios.post(
-      `http://localhost:3001/favorites/${groupId}`,
+      `https://taxilink.onrender.com/favorites/${groupId}`,
       {},
       {
         headers: {
