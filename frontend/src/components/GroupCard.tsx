@@ -93,11 +93,11 @@ function GroupCard({
 >
   <div className="group-info">
 
-  <p className="group-region">
-    {group.region}
-  </p>
-
-  <div className="group-middle">
+  <div  style={{
+          display: 'flex',
+          justifyContent:
+            'space-between',
+        }}>
     <span className="online-drivers">
       🚕 {group.onlineDrivers}
     </span>
@@ -113,7 +113,7 @@ function GroupCard({
       {group.district
         ? `${group.district} • `
         : ''}
-      {group.province}
+      {group.region}
     </small>
 
     <button
