@@ -13,6 +13,14 @@ body {
   width: 600px;
 }
 
+.app {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
 .header {
   margin-bottom: 20px;
 }
@@ -48,9 +56,9 @@ body {
   cursor: pointer;
 }
 
-.grupos {
+.groups {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 15px;
 }
 
@@ -80,6 +88,7 @@ body {
   margin-bottom: 12px;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex: 1 1 300px;
 }
 
 .group-card:hover {
@@ -390,4 +399,47 @@ body {
 .my-request {
   align-self: flex-end;
   background: #0b8457;
+}
+
+@media (max-width: 768px) {
+
+  .page-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .filters {
+    flex-wrap: wrap;
+  }
+
+  .chat-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .message-input {
+    flex-direction: column;
+  }
+
+  .message-input input {
+    width: 100%;
+  }
+
+  .message-input button {
+    width: 100%;
+  }
+
+  .group-card {
+    width: 100%;
+  }
+}
+
+.messages-container {
+  height: 50vh;
+  overflow-y: auto;
+}
+
+.request-card {
+  width: 100%;
+  box-sizing: border-box;
 }
