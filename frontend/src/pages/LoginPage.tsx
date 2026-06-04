@@ -40,7 +40,8 @@ export function LoginPage() {
       data.accessToken,
     );
 
-    navigate('/groups');
+    window.location.href =
+  '/groups';
   } catch (error) {
     console.log(error);
 
@@ -74,9 +75,7 @@ export function LoginPage() {
         />
 
         <button type="submit" style={{ width: "100%" }}
-        onClick={() =>
-    navigate('/groups')
-  }>
+  >
           Entrar
         </button>
       </form>
