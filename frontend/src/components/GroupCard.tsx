@@ -75,8 +75,8 @@ function GroupCard({
             'space-between',
         }}
       >
-        <h3>{group.name}🚕 {group.onlineDrivers}</h3>
-
+        <h3>{group.name}</h3>
+         <p>🚕 {group.onlineDrivers}</p>
         <h3>
           {group.price} MT
         </h3>
@@ -105,16 +105,17 @@ function GroupCard({
     </small>
 
     <button
+    style={{justifyContent:"center"}}
       className="favorite-btn"
       onClick={handleFavorite}
     >
       {isFavorite ? '❤️' : '🤍'}
     </button>
 
-    <span>
+    <p>
       ⭐ {averageRating}
       ({totalRatings})
-    </span>
+    </p>
   </div>
 
 </div>
