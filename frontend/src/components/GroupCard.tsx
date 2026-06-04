@@ -93,35 +93,35 @@ function GroupCard({
 >
   <div className="group-info">
 
-  <div className="group-row">
-    <p>{group.region}</p>
+  <p className="group-region">
+    {group.region}
+  </p>
 
-    <p className="online-drivers">
+  <div className="group-middle">
+    <span className="online-drivers">
       🚕 {group.onlineDrivers}
-    </p>
+    </span>
+
+    <span>
+      ⭐ {averageRating}
+      ({totalRatings})
+    </span>
   </div>
 
-  <div className="group-row">
+  <div className="group-bottom">
     <small>
       {group.district
         ? `${group.district} • `
         : ''}
       {group.province}
     </small>
-  </div>
 
-  <div className="group-row">
     <button
       className="favorite-btn"
       onClick={handleFavorite}
     >
       {isFavorite ? '❤️' : '🤍'}
     </button>
-
-    <small>
-      ⭐ {averageRating}
-      ({totalRatings})
-    </small>
   </div>
 
 </div>
