@@ -429,36 +429,3 @@ body {
   }
 }
 
-.group-info {
-  margin-top: 10px;
-}
-
-.group-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 6px;
-}
-
-.online-drivers {
-  color: green;
-  font-weight: bold;
-}
-
-@media (max-width: 768px) {
-
-  .page-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-  }
-
-  .page-header button {
-    width: 100%;
-  }
-
-  .group-card h3 {
-    font-size: 18px;
-  }
-
-}
