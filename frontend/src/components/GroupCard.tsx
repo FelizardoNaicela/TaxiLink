@@ -62,65 +62,44 @@ function GroupCard({
 }
 
   return (
-    <div
-      className="group-card"
-      onClick={() =>
-        navigate(`/chat/${group.id}`)
-      }
-    >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent:
-            'space-between',
-        }}
-      >
-        <h3>{group.name}</h3>
-         <p>🚕 {group.onlineDrivers}</p>
-        <h3>
-          {group.price} MT
-        </h3>
+  <div
+    className="group-card"
+    onClick={() =>
+      navigate(`/chat/${group.id}`)
+    }
+  >
+    <div className="group-top">
+      <h3>{group.name}</h3>
+
+      <div className="group-price">
+        🚕 {group.onlineDrivers}
+        <strong>{group.price} MT</strong>
       </div>
-
-      <div
-  style={{
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: '10px',
-  }}
-
->
-
-  <div style={{
-          display: 'flex',
-          justifyContent:
-            'space-between',
-        }}>
-    <small>
-      {group.district
-        ? `${group.district} • `
-        : ''}
-      {group.region}
-    </small>
-
-    <button
-    style={{justifyContent:"center"}}
-      className="favorite-btn"
-      onClick={handleFavorite}
-    >
-      {isFavorite ? '❤️' : '🤍'}
-    </button>
-
-    <p>
-      ⭐ {averageRating}
-      ({totalRatings})
-    </p>
-  </div>
-
-</div>
     </div>
-  );
+
+    <div className="group-bottom">
+      <small>
+        {group.district
+          ? `${group.district} • `
+          : ''}
+        {group.region}
+      </small>
+
+      <div className="group-right">
+        <button
+          className="favorite-btn"
+          onClick={handleFavorite}
+        >
+          {isFavorite ? '❤️' : '🤍'}
+        </button>
+
+        <span className="group-rating">
+          ⭐ {averageRating} ({totalRatings})
+        </span>
+      </div>
+    </div>
+  </div>
+);
 }
 
 export default GroupCard;
