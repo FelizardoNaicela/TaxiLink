@@ -73,7 +73,10 @@ export function LoginPage() {
           }
         />
 
-        <button type="submit" style={{ width: "100%" }}>
+        <button type="submit" style={{ width: "100%" }}
+        onClick={() =>
+    navigate('/groups')
+  }>
           Entrar
         </button>
       </form>
