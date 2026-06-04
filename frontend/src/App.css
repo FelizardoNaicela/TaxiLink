@@ -5,15 +5,6 @@ body {
 }
 
 .app {
-  max-width: 600px;
-  margin: 40px auto;
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 600px;
-}
-
-.app {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -382,6 +373,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-bottom: 20px;
 }
 
 .request-card {
@@ -392,10 +384,6 @@ body {
   color: white;
 }
 
-.request-card p {
-  margin: 4px 0;
-}
-
 .my-request {
   align-self: flex-end;
   background: #0b8457;
@@ -403,43 +391,40 @@ body {
 
 @media (max-width: 768px) {
 
-  .page-header {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .filters {
-    flex-wrap: wrap;
+  .chat-page {
+    padding: 10px;
+    box-sizing: border-box;
+    min-height: 100vh;
   }
 
   .chat-header {
     flex-direction: column;
+    align-items: flex-start;
     gap: 10px;
   }
 
   .message-input {
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
   }
 
   .message-input input {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
   }
 
   .message-input button {
-    width: 100%;
+    width: auto;
+    min-width: 55px;
   }
 
-  .group-card {
-    width: 100%;
+  .my-message,
+  .other-message {
+    max-width: 85%;
   }
-}
 
-.messages-container {
-  height: 50vh;
-  overflow-y: auto;
-}
-
-.request-card {
-  width: 100%;
-  box-sizing: border-box;
+  .request-card {
+    max-width: 90%;
+  }
 }
