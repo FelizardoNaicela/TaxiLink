@@ -95,7 +95,7 @@ function GroupCard({
   {group.region}
 </p>
 <p style={{color:"green"}}>
-  🚕 {group.onlineDrivers} motoristas online
+  🚕 {group.onlineDrivers}
 </p>
 <small>
   {group.district
