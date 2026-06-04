@@ -50,6 +50,11 @@ export function AppRoutes() {
 />
 
 <Route
+      path="/"
+      element={<Navigate to="/groups" />}
+    />
+
+<Route
   path="/groups"
   element={
     <ProtectedRoute>
