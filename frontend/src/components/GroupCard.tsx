@@ -75,7 +75,7 @@ function GroupCard({
             'space-between',
         }}
       >
-        <h3>{group.name}</h3>
+        <h3>{group.name}🚕 {group.onlineDrivers}</h3>
 
         <h3>
           {group.price} MT
@@ -91,24 +91,12 @@ function GroupCard({
   }}
 
 >
-  <div className="group-info">
 
-  <div  style={{
+  <div style={{
           display: 'flex',
           justifyContent:
             'space-between',
         }}>
-    <span className="online-drivers">
-      🚕 {group.onlineDrivers}
-    </span>
-
-    <span>
-      ⭐ {averageRating}
-      ({totalRatings})
-    </span>
-  </div>
-
-  <div className="group-bottom">
     <small>
       {group.district
         ? `${group.district} • `
@@ -122,9 +110,13 @@ function GroupCard({
     >
       {isFavorite ? '❤️' : '🤍'}
     </button>
+
+    <span>
+      ⭐ {averageRating}
+      ({totalRatings})
+    </span>
   </div>
 
-</div>
 </div>
     </div>
   );
