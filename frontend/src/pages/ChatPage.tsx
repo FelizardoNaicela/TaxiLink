@@ -309,7 +309,8 @@ async function finishRideRequest(
   </div>
 </div>
 
-  <button onClick={logout}>
+  <button onClick={logout}
+  className="logout-btn">
     Sair
   </button>
 </div>
@@ -349,6 +350,11 @@ async function finishRideRequest(
             e.target.value,
           )
         }
+        onKeyDown={(e) => {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  }}
         placeholder="
 Descreva sua localização"
       />
