@@ -39,6 +39,9 @@ const [requestDescription,
   setRequestDescription] =
   useState('');
 
+  const [showRequests, setShowRequests] =
+  useState(false);
+
   const { groupId } = useParams();
 
   useEffect(() => {
@@ -260,10 +263,6 @@ async function finishRideRequest(
   const token =
     localStorage.getItem('token');
 
-    if (!requestDescription.trim()) {
-  return;
-}
-
   await axios.post(
     `https://taxilink.onrender.com/ride-requests/${requestId}/finish`,
     {},
@@ -318,10 +317,27 @@ async function finishRideRequest(
 
 <div className="ride-requests">
 
+ <div
+  className="requests-header"
+  onClick={() =>
+    setShowRequests(
+      !showRequests,
+    )
+  }
+>
   <h3>
     Pedidos de Táxi
   </h3>
 
+  <span>
+    {showRequests
+      ? '▲'
+      : '▼'}
+  </span>
+</div>
+
+{showRequests && (
+  <>
   {user?.role === 'CLIENT' && (
 
     <div>
@@ -419,6 +435,8 @@ Descreva sua localização"
 
     ),
   )}
+   </>
+)}
 
 </div>
 
