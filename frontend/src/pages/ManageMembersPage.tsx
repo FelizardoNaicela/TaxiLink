@@ -28,9 +28,6 @@ export function ManageMembersPage() {
 const [users, setUsers] =
   useState<any[]>([]);
 
-const [results, setResults] =
-  useState<any[]>([]);
-
   async function loadMembers() {
 
     const data =
@@ -167,55 +164,6 @@ Pesquisar por nome, email ou telefone"
   </div>
 
 ))}
-
-{results.length > 0 && (
-
-  <div>
-
-    <h3>
-      Resultados
-    </h3>
-
-    {results.map(
-      (user) => (
-
-        <div
-          key={user.id}
-          className="group-card"
-        >
-
-          <h4>
-            {user.name}
-          </h4>
-
-          <p>
-            {user.email}
-          </p>
-
-          {user.phone && (
-            <p>
-              {user.phone}
-            </p>
-          )}
-
-          <button
-            onClick={() =>
-              handleAddMember(
-                user.id,
-              )
-            }
-          >
-            Adicionar
-          </button>
-
-        </div>
-
-      ),
-    )}
-
-  </div>
-
-)}
 
       {members.map(
         (member) => (
