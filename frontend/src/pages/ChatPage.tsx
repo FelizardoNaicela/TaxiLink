@@ -10,7 +10,10 @@ import { useParams } from 'react-router-dom';
 
 import type { Group, Rating } from '../types/Group';
 
-import { getGroups } from '../services/groupService';
+import {
+  getGroups,
+  getMyGroups,
+} from '../services/groupService';
 import { useNavigate }
 from 'react-router-dom';
 
@@ -47,6 +50,38 @@ const [requestDescription,
   useState(false);
 
   const { groupId } = useParams();
+
+  async function loadGroup() {
+  let groups: Group[] = [];
+
+  if (user?.role === 'DRIVER') {
+    groups = await getMyGroups();
+  } else {
+    groups = await getGroups();
+  }
+
+  const currentGroup =
+    groups.find(
+      (group) =>
+        group.id === Number(groupId),
+    ) || null;
+
+  setGroup(currentGroup);
+
+  if (!currentGroup) {
+    return;
+  }
+
+  const myRating =
+    currentGroup.ratings.find(
+      (rating: Rating) =>
+        rating.userId === user?.id,
+    );
+
+  if (myRating) {
+    setRating(myRating.value);
+  }
+}
 
   useEffect(() => {
   socket.on(
@@ -87,36 +122,8 @@ const [requestDescription,
 }, [groupId]);
 
 useEffect(() => {
-  async function loadGroup() {
-    const groups =
-      await getGroups();
-
-    const currentGroup =
-      groups.find(
-        (group: Group) =>
-          group.id === Number(groupId),
-      );
-
-    setGroup(currentGroup);
-
-    if (!currentGroup) {
-      return;
-    }
-
-    const myRating =
-      currentGroup.ratings.find(
-        (rating: Rating) =>
-          rating.userId === user?.id,
-      );
-
-    if (myRating) {
-      setRating(myRating.value);
-    }
-  }
-
   loadGroup();
   loadGroupRating();
-
 }, [groupId, user]);
 
   async function sendMessage() {
@@ -173,7 +180,9 @@ useEffect(() => {
 
 async function loadGroupRating() {
   const groups =
-    await getGroups();
+    user?.role === 'DRIVER'
+      ? await getMyGroups()
+      : await getGroups();
 
   const currentGroup =
     groups.find(
