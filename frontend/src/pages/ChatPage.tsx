@@ -36,6 +36,9 @@ const navigate =
   const [rating, setRating] =
   useState(0);
 
+  const [isMember, setIsMember] =
+  useState(false);
+
 const [averageRating, setAverageRating] =
   useState(0);
 
@@ -52,17 +55,12 @@ const [requestDescription,
   const { groupId } = useParams();
 
   async function loadGroup() {
-  let groups: Group[] = [];
-
-  if (user?.role === 'DRIVER') {
-    groups = await getMyGroups();
-  } else {
-    groups = await getGroups();
-  }
+  const allGroups =
+    await getGroups();
 
   const currentGroup =
-    groups.find(
-      (group) =>
+    allGroups.find(
+      (group: Group) =>
         group.id === Number(groupId),
     ) || null;
 
@@ -70,6 +68,21 @@ const [requestDescription,
 
   if (!currentGroup) {
     return;
+  }
+
+  if (user?.role === 'DRIVER') {
+    const myGroups =
+      await getMyGroups();
+
+    const member =
+      myGroups.some(
+        (group: Group) =>
+          group.id === Number(groupId),
+      );
+
+    setIsMember(member);
+  } else {
+    setIsMember(false);
   }
 
   const myRating =
@@ -180,9 +193,7 @@ useEffect(() => {
 
 async function loadGroupRating() {
   const groups =
-    user?.role === 'DRIVER'
-      ? await getMyGroups()
-      : await getGroups();
+  await getGroups();
 
   const currentGroup =
     groups.find(
@@ -432,7 +443,7 @@ Descreva sua localização"
           </p>
         )}
 
-        {user?.role === 'DRIVER' &&
+        {user?.role === 'DRIVER' && isMember &&
           request.status ===
             'PENDING' && (
 
@@ -448,7 +459,7 @@ Descreva sua localização"
 
         )}
 
-        {user?.role === 'DRIVER' &&
+        {user?.role === 'DRIVER' && isMember &&
  request.status === 'ACCEPTED' &&
  request.driver?.id === user.id && (
 
@@ -473,7 +484,7 @@ Descreva sua localização"
 
 </div>
 
-      {user?.role === 'DRIVER' && (
+      {user?.role === 'DRIVER' && isMember && (
 
 <div className="messages-container">
   {messages.map((message) => (
@@ -499,7 +510,7 @@ Descreva sua localização"
 
 )}
 
-      {user?.role === 'DRIVER' && (
+      {user?.role === 'DRIVER' && isMember && (
 
 <div className="message-input">
   <input
@@ -524,10 +535,14 @@ Descreva sua localização"
 
 )}
 
-{user?.role === 'CLIENT' && (
+{(
+  user?.role === 'CLIENT' ||
+  (user?.role === 'DRIVER' &&
+   !isMember)
+) && (
   <p>
     Utilize apenas os pedidos de táxi.
-    O chat é reservado aos motoristas.
+    O chat é reservado aos membros deste grupo.
   </p>
 )}
     </div>

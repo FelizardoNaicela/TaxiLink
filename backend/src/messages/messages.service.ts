@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ForbiddenException } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 
 import { CreateMessageDto } from './dto/create-message.dto';
 import { ChatGateway } from '../chat/chat.gateway';
+
+
 
 @Injectable()
 export class MessagesService {
@@ -13,11 +15,28 @@ export class MessagesService {
   private readonly chatGateway: ChatGateway,
 ) {}
 
+
   async create(
   createMessageDto: CreateMessageDto,
   userId: number,
 ) {
 
+  const member =
+    await this.prisma.groupMember.findUnique({
+      where: {
+        userId_groupId: {
+          userId,
+          groupId:
+            createMessageDto.groupId,
+        },
+      },
+    });
+
+  if (!member) {
+    throw new ForbiddenException(
+      'Não pertence ao grupo',
+    );
+  }
   const user =
     await this.prisma.user.findUnique({
       where: {
@@ -26,10 +45,10 @@ export class MessagesService {
     });
 
   if (user?.role === 'CLIENT') {
-    throw new Error(
-      'Clientes não podem enviar mensagens',
-    );
-  }
+  throw new ForbiddenException(
+    'Clientes não podem enviar mensagens',
+  );
+}
 
   return this.prisma.message.create({
     data: {
