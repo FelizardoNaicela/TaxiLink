@@ -13,6 +13,9 @@ import { ProtectedRoute } from './ProtectedRoute';
 import { PublicRoute } from './PublicRoute';
 import GroupsPage from '../pages/GroupsPage';
 import { CreateGroupPage } from '../pages/CreatGroupPage';
+import {
+  ManageMembersPage,
+} from '../pages/ManageMembersPage';
 
 export function AppRoutes() {
   return (
@@ -68,6 +71,15 @@ export function AppRoutes() {
   element={
     <ProtectedRoute>
       <CreateGroupPage />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/groups/:groupId/members"
+  element={
+    <ProtectedRoute>
+      <ManageMembersPage />
     </ProtectedRoute>
   }
 />

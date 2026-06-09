@@ -22,6 +22,9 @@ export function RegisterPage() {
   const [role, setRole] =
   useState('CLIENT');
 
+  const [phone, setPhone] =
+  useState('');
+
   async function handleRegister(
     event: React.FormEvent,
   ) {
@@ -34,6 +37,7 @@ export function RegisterPage() {
   password,
   province,
   role,
+  phone,
 );
 
       alert('Conta criada');
@@ -84,6 +88,20 @@ export function RegisterPage() {
             
           }
         />
+
+        <input
+  style={styles.input}
+  type="text"
+  placeholder={
+    role === 'DRIVER'
+      ? 'Telefone *'
+      : 'Telefone (opcional)'
+  }
+  value={phone}
+  onChange={(event) =>
+    setPhone(event.target.value)
+  }
+/>
 <div style={styles.row}>
         <select
         style={styles.select}

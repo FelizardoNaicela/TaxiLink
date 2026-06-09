@@ -11,12 +11,16 @@ import { useParams } from 'react-router-dom';
 import type { Group, Rating } from '../types/Group';
 
 import { getGroups } from '../services/groupService';
+import { useNavigate }
+from 'react-router-dom';
 
   
 export function ChatPage() {
   const [message, setMessage] =
     useState('');
 
+const navigate =
+  useNavigate();
   const [messages, setMessages] =
     useState<any[]>([]);
 
@@ -40,6 +44,9 @@ const [requestDescription,
   useState('');
 
   const [showRequests, setShowRequests] =
+  useState(false);
+
+  const [isMember, setIsMember] =
   useState(false);
 
   const { groupId } = useParams();
@@ -94,6 +101,18 @@ useEffect(() => {
 
     setGroup(currentGroup);
 
+    if (
+  user?.role === 'DRIVER'
+) {
+
+  const member =
+    currentGroup?.members?.find(
+      (member: any) =>
+        member.userId === user.id,
+    );
+
+  setIsMember(!!member);
+}
     
 
 if (!currentGroup) {
@@ -277,11 +296,47 @@ async function finishRideRequest(
   loadRideRequests();
 }
 
+if (
+  user?.role === 'DRIVER' &&
+  !isMember
+) {
+  return (
+    <div className="app">
+
+      <h2>
+        Não pertence a este grupo.
+      </h2>
+
+      <button
+        onClick={() =>
+          navigate('/groups')
+        }
+      >
+        Voltar
+      </button>
+
+    </div>
+  );
+}
+
   return (
    <div className="chat-page">
         <div className="chat-header">
   <div>
     <h1>{group?.name}</h1>
+    {group?.ownerId === user?.id && (
+
+  <button
+    onClick={() =>
+      navigate(
+        `/groups/${group?.id}/members`,
+      )
+    }
+  >
+    Gerir Membros
+  </button>
+
+)}
 
     <p>{group?.region}</p>
   </div>

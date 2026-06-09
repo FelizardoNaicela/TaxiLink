@@ -1,12 +1,14 @@
-import { 
-    Controller,
-    Body,
-    Get,
-    Post
- } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { create } from 'domain';
+import { Param } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
@@ -25,4 +27,24 @@ export class UsersController {
         ){ return this.userService.create(
             createUserDto,
         )};
+
+        @Get('search')
+search(
+  @Query('q')
+  query: string,
+) {
+  return this.userService.search(
+    query,
+  );
+}
+
+@Get('phone/:phone')
+findByPhone(
+  @Param('phone')
+  phone: string,
+) {
+  return this.userService.findByPhone(
+    phone,
+  );
+}
 }

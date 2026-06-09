@@ -25,6 +25,7 @@ export async function register(
   password: string,
   province: string,
   role: string,
+  phone: string,
 ) {
   const response = await api.post(
     '/users',
@@ -34,6 +35,7 @@ export async function register(
   password,
   province,
   role,
+  phone,
 },
   );
 

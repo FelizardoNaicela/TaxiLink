@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
@@ -16,6 +16,24 @@ export class UsersService {
     async create(
   createUserDto: CreateUserDto,
 ) {
+
+  if (
+    createUserDto.role === 'DRIVER' &&
+    !createUserDto.phone
+  ) {
+    throw new Error(
+      'Motoristas devem informar telefone',
+    );
+  }
+
+  if (
+  createUserDto.role === 'DRIVER' &&
+  !createUserDto.phone
+) {
+  throw new Error(
+    'Telefone é obrigatório para taxistas',
+  );
+}
   const hashedPassword =
     await bcrypt.hash(
       createUserDto.password,
@@ -23,11 +41,11 @@ export class UsersService {
     );
 
   return this.prisma.user.create({
-  data: {
-    ...createUserDto,
-    password: hashedPassword,
-  },
-});
+    data: {
+      ...createUserDto,
+      password: hashedPassword,
+    },
+  });
 }
 
 findByEmail(email: string){
@@ -36,5 +54,41 @@ findByEmail(email: string){
             email,
         },
     });
+}
+
+search(
+  query: string,
+) {
+  return this.prisma.user.findMany({
+    where: {
+      OR: [
+        {
+          name: {
+            contains: query,
+          },
+        },
+
+        {
+          email: {
+            contains: query,
+          },
+        },
+
+        {
+          phone: {
+            contains: query,
+          },
+        },
+      ],
+    },
+  });
+}
+
+findByPhone(phone: string) {
+  return this.prisma.user.findUnique({
+    where: {
+      phone,
+    },
+  });
 }
 }

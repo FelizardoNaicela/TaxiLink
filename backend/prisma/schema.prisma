@@ -9,21 +9,28 @@ datasource db {
 
 model User {
   id       Int    @id @default(autoincrement())
+
   name     String
   email    String @unique
   password String
+
   role     String
   province String
 
+  phone String? @unique
+
   createdAt DateTime @default(now())
 
-  groups     Group[]
-  messages   Message[]
-  ratings    Rating[]
-  favorites  Favorite[]
+  memberships GroupMember[]
+
+  messages Message[]
+  ratings Rating[]
+  favorites Favorite[]
 
   rideRequests RideRequest[] @relation("ClientRequests")
   acceptedRides RideRequest[] @relation("DriverRequests")
+  ownedGroups Group[] @relation("GroupOwner")
+
 }
 
 model Group {
@@ -43,13 +50,15 @@ model Group {
 
   ownerId Int
 
-  owner User @relation(fields: [ownerId], references: [id])
 
   messages Message[]
   ratings Rating[]
   favorites Favorite[]
 
   rideRequests RideRequest[]
+   members GroupMember[]
+
+   owner User @relation("GroupOwner", fields: [ownerId], references: [id])
 }
 
 model Rating {
@@ -114,4 +123,27 @@ model RideRequest {
   driver User? @relation("DriverRequests", fields: [driverId], references: [id])
 
   group Group @relation(fields: [groupId], references: [id])
+}
+
+model GroupMember {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  groupId Int
+
+  role GroupRole
+
+  joinedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  group Group @relation(fields: [groupId], references: [id])
+
+  @@unique([userId, groupId])
+}
+
+enum GroupRole {
+  OWNER
+  ADMIN
+  MEMBER
 }

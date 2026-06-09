@@ -11,16 +11,34 @@ export interface Favorite {
 }
 
 export interface Group {
- id: number;
- name: string;
- description: string;
- onlineDrivers: number;
- region: string;
- price: number;
- ownerId: number;
- type: string;
- ratings: Rating[];
- province: string;
- district: string;
- favorites: Favorite[];
+  id: number;
+  name: string;
+  description: string;
+  onlineDrivers: number;
+  region: string;
+  price: number;
+  ownerId: number;
+  type: string;
+  ratings: Rating[];
+  province: string;
+  district: string;
+  favorites: Favorite[];
+  members: GroupMember[];
+}
+
+export interface GroupMember {
+  id: number;
+
+  role: string;
+
+  userId: number;
+
+  groupId: number;
+
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    phone?: string;
+  };
 }

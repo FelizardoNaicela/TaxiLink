@@ -11,6 +11,7 @@ type User = {
   sub: number;
   id: number;
   email: string;
+  phone?: string;
   role: string;
   province: string;
   name: string;
