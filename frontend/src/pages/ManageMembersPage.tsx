@@ -82,8 +82,6 @@ const [users, setUsers] =
   );
 
 setUsers(filteredUsers);
-
-  setUsers(data);
 }
 
 async function handleAddMember(

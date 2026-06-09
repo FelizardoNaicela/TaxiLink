@@ -30,7 +30,7 @@ export class UsersController {
 
         @Get('search')
 search(
-  @Query('q')
+  @Query('search')
   query: string,
 ) {
   return this.userService.search(
