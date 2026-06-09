@@ -1,18 +1,33 @@
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+  useState,
+} from 'react';
 
-import GroupCard from '../components/GroupCard';
+import GroupCard
+from '../components/GroupCard';
 
-import type { Group } from '../types/Group';
+import type { Group }
+from '../types/Group';
 
-import { getGroups } from '../services/groupService';
+import {
+  getGroups,
+  getMyGroups,
+} from '../services/groupService';
 
-import { useAuth } from '../contexts/AuthContext';
+import {
+  useAuth,
+} from '../contexts/AuthContext';
 
-import { useNavigate }
-from 'react-router-dom';
+import {
+  useNavigate,
+} from 'react-router-dom';
 
 function GroupsPage() {
+
   const [groups, setGroups] =
+    useState<Group[]>([]);
+
+  const [myGroups, setMyGroups] =
     useState<Group[]>([]);
 
   const [loading, setLoading] =
@@ -21,15 +36,23 @@ function GroupsPage() {
   const [filter, setFilter] =
     useState('ALL');
 
-    const [provinceFilter, setProvinceFilter] =
-  useState('ALL');
+  const [
+    provinceFilter,
+    setProvinceFilter,
+  ] = useState('ALL');
 
-  const [showFavorites,
-setShowFavorites] =
-useState(false);
+  const [
+    showFavorites,
+    setShowFavorites,
+  ] = useState(false);
 
-const [search, setSearch] =
-  useState('');
+  const [
+    showMyGroups,
+    setShowMyGroups,
+  ] = useState(true);
+
+  const [search, setSearch] =
+    useState('');
 
   const {
     user,
@@ -37,31 +60,60 @@ const [search, setSearch] =
   } = useAuth();
 
   const navigate =
-  useNavigate();
+    useNavigate();
 
   useEffect(() => {
-    async function loadGroups() {
-  const data = await getGroups();
 
-  console.log(data);
+    async function loadData() {
 
-  setGroups(data);
+      try {
 
-  setLoading(false);
-}
-    console.log(user);
+        const allGroups =
+          await getGroups();
 
-    loadGroups();
-  }, []);
+        setGroups(allGroups);
+
+        if (
+          user?.role === 'DRIVER'
+        ) {
+
+          const driverGroups =
+            await getMyGroups();
+
+          setMyGroups(
+            driverGroups,
+          );
+        }
+
+      } finally {
+
+        setLoading(false);
+      }
+    }
+
+    loadData();
+
+  }, [user]);
+
+  const groupsSource =
+    user?.role === 'DRIVER' &&
+    showMyGroups
+      ? myGroups
+      : groups;
 
   const sortedGroups =
-    [...groups].sort(
+    [...groupsSource].sort(
       (a, b) => {
+
         const avgA =
           a.ratings.length > 0
             ? a.ratings.reduce(
-                (sum, rating) =>
-                  sum + rating.value,
+                (
+                  sum,
+                  rating,
+                ) =>
+                  sum +
+                  rating.value,
                 0,
               ) /
               a.ratings.length
@@ -70,8 +122,12 @@ const [search, setSearch] =
         const avgB =
           b.ratings.length > 0
             ? b.ratings.reduce(
-                (sum, rating) =>
-                  sum + rating.value,
+                (
+                  sum,
+                  rating,
+                ) =>
+                  sum +
+                  rating.value,
                 0,
               ) /
               b.ratings.length
@@ -81,68 +137,75 @@ const [search, setSearch] =
       },
     );
 
-    const provinces = [
-  'ALL',
-  ...new Set(
-    groups.map(
-      (group) => group.province,
+  const provinces = [
+    'ALL',
+    ...new Set(
+      sortedGroups.map(
+        (group) =>
+          group.province,
+      ),
     ),
-  ),
-];
+  ];
 
   const filteredGroups =
-  sortedGroups.filter((group) => {
+    sortedGroups.filter(
+      (group) => {
 
-    const matchesType =
-      filter === 'ALL'
-        ? true
-        : group.type === filter;
+        const matchesType =
+          filter === 'ALL'
+            ? true
+            : group.type ===
+              filter;
 
-    const matchesProvince =
-      provinceFilter === 'ALL'
-        ? true
-        : group.province ===
-          provinceFilter;
+        const matchesProvince =
+          provinceFilter ===
+          'ALL'
+            ? true
+            : group.province ===
+              provinceFilter;
 
-    const matchesSearch =
-      group.name
-        .toLowerCase()
-        .includes(
-          search.toLowerCase(),
-        ) ||
-      group.region
-        ?.toLowerCase()
-        .includes(
-          search.toLowerCase(),
+        const matchesSearch =
+          group.name
+            .toLowerCase()
+            .includes(
+              search.toLowerCase(),
+            ) ||
+          group.region
+            ?.toLowerCase()
+            .includes(
+              search.toLowerCase(),
+            );
+
+        return (
+          matchesType &&
+          matchesProvince &&
+          matchesSearch
         );
-
-    return (
-      matchesType &&
-      matchesProvince &&
-      matchesSearch
+      },
     );
-  });
 
   const favoriteGroups =
-  filteredGroups.filter(
-    (group) =>
-      group.favorites?.some(
-        (favorite) =>
-          favorite.userId ===
-          user?.id,
-      ),
-  );
+    filteredGroups.filter(
+      (group) =>
+        group.favorites?.some(
+          (favorite) =>
+            favorite.userId ===
+            user?.id,
+        ),
+    );
 
   const groupsToShow =
-  showFavorites
-    ? favoriteGroups
-    : filteredGroups;
+    showFavorites
+      ? favoriteGroups
+      : filteredGroups;
 
   return (
     <div className="app">
 
       <div className="page-header">
+
         <div>
+
           <h2>
             TaxiLink
           </h2>
@@ -150,6 +213,7 @@ const [search, setSearch] =
           <p>
             {user?.email}
           </p>
+
         </div>
 
         <button
@@ -159,43 +223,91 @@ const [search, setSearch] =
           Sair
         </button>
 
-        {user?.role === 'DRIVER' && (
-  <button
-    className="create-group-btn"
-    onClick={() =>
-      navigate('/groups/create')
-    }
-  >
-    + Criar Grupo
-  </button>
-)}
+        {user?.role ===
+          'DRIVER' && (
+
+          <button
+            className="create-group-btn"
+            onClick={() =>
+              navigate(
+                '/groups/create',
+              )
+            }
+          >
+            + Criar Grupo
+          </button>
+
+        )}
+
       </div>
 
-<input
-  className="search-input"
-  type="text"
-  placeholder="🔍 Pesquisar grupo ou região..."
-  value={search}
-  onChange={(e) =>
-    setSearch(e.target.value)
-  }
-/>
+      {user?.role ===
+        'DRIVER' && (
+
+        <div className="filters">
+
+          <button
+            className={
+              showMyGroups
+                ? 'active-filter'
+                : ''
+            }
+            onClick={() =>
+              setShowMyGroups(
+                true,
+              )
+            }
+          >
+            Meus Grupos
+          </button>
+
+          <button
+            className={
+              !showMyGroups
+                ? 'active-filter'
+                : ''
+            }
+            onClick={() =>
+              setShowMyGroups(
+                false,
+              )
+            }
+          >
+            Explorar
+          </button>
+
+        </div>
+
+      )}
+
+      <input
+        className="search-input"
+        type="text"
+        placeholder="🔍 Pesquisar grupo ou região..."
+        value={search}
+        onChange={(e) =>
+          setSearch(
+            e.target.value,
+          )
+        }
+      />
+
       <div className="filters">
 
-       <button
-  className={
-    showFavorites
-      ? 'active-filter'
-      : ''
-  }
-  onClick={() =>
-    setShowFavorites(
-      !showFavorites,
-    )
-  }
->
-  Favoritos
-</button>
+        <button
+          className={
+            showFavorites
+              ? 'active-filter'
+              : ''
+          }
+          onClick={() =>
+            setShowFavorites(
+              !showFavorites,
+            )
+          }
+        >
+          Favoritos
+        </button>
 
         <button
           className={
@@ -204,7 +316,9 @@ const [search, setSearch] =
               : ''
           }
           onClick={() =>
-            setFilter('TAXI')
+            setFilter(
+              'TAXI',
+            )
           }
         >
           Táxi
@@ -217,7 +331,9 @@ const [search, setSearch] =
               : ''
           }
           onClick={() =>
-            setFilter('MOTO')
+            setFilter(
+              'MOTO',
+            )
           }
         >
           Moto
@@ -225,58 +341,97 @@ const [search, setSearch] =
 
         <button
           className={
-            filter === 'TXOPELA'
+            filter ===
+            'TXOPELA'
               ? 'active-filter'
               : ''
           }
           onClick={() =>
-            setFilter('TXOPELA')
+            setFilter(
+              'TXOPELA',
+            )
           }
         >
           Txopela
         </button>
 
       </div>
-<hr />
+
+      <hr />
+
       <div className="filters">
-  {provinces.map((province) => (
-    <button
-      key={province}
-      className={
-        provinceFilter === province
-          ? 'active-region'
-          : ''
-      }
-      onClick={() =>
-        setProvinceFilter(province)
-      }
-    >
-      {province === 'ALL'
-        ? 'Todas Províncias'
-        : province}
-    </button>
-  ))}
-</div>
+
+        {provinces.map(
+          (province) => (
+
+            <button
+              key={province}
+              className={
+                provinceFilter ===
+                province
+                  ? 'active-region'
+                  : ''
+              }
+              onClick={() =>
+                setProvinceFilter(
+                  province,
+                )
+              }
+            >
+              {province ===
+              'ALL'
+                ? 'Todas Províncias'
+                : province}
+            </button>
+
+          ),
+        )}
+
+      </div>
 
       <h3>
-        Grupos disponíveis
+        {showMyGroups &&
+        user?.role ===
+          'DRIVER'
+          ? 'Meus Grupos'
+          : 'Grupos Disponíveis'}
       </h3>
 
       {loading ? (
+
         <p>
           Carregando grupos...
         </p>
+
       ) : (
-        <div className="groups">
-          {groupsToShow.map(
-  (group) => (
-    <GroupCard
-      key={group.id}
-      group={group}
-    />
-  ),
-)}
-        </div>
+
+        <>
+          {groupsToShow.length ===
+            0 && (
+
+            <p>
+              Nenhum grupo
+              encontrado.
+            </p>
+
+          )}
+
+          <div className="groups">
+
+            {groupsToShow.map(
+              (group) => (
+
+                <GroupCard
+                  key={group.id}
+                  group={group}
+                />
+
+              ),
+            )}
+
+          </div>
+        </>
+
       )}
 
     </div>

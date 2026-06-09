@@ -46,32 +46,30 @@ const [requestDescription,
   const [showRequests, setShowRequests] =
   useState(false);
 
-  const [isMember, setIsMember] =
-  useState(false);
-
   const { groupId } = useParams();
 
   useEffect(() => {
-    socket.on(
-  'newMessage',
+  socket.on(
+    'newMessage',
+    (newMessage) => {
+      if (
+        newMessage.groupId ===
+        Number(groupId)
+      ) {
+        setMessages(
+          (oldMessages) => [
+            ...oldMessages,
+            newMessage,
+          ],
+        );
+      }
+    },
+  );
 
-  (newMessage) => {
-    if (
-      newMessage.groupId ===
-      Number(groupId)
-    ) {
-      setMessages((oldMessages) => [
-        ...oldMessages,
-        newMessage,
-      ]);
-    }
-  },
-);
-
-    return () => {
-      socket.off('newMessage');
-    };
-  }, []);
+  return () => {
+    socket.off('newMessage');
+  };
+}, [groupId]);
 
   useEffect(() => {
   async function loadMessages() {
@@ -101,38 +99,25 @@ useEffect(() => {
 
     setGroup(currentGroup);
 
-    if (
-  user?.role === 'DRIVER'
-) {
+    if (!currentGroup) {
+      return;
+    }
 
-  const member =
-    currentGroup?.members?.find(
-      (member: any) =>
-        member.userId === user.id,
-    );
+    const myRating =
+      currentGroup.ratings.find(
+        (rating: Rating) =>
+          rating.userId === user?.id,
+      );
 
-  setIsMember(!!member);
-}
-    
-
-if (!currentGroup) {
-  return;
-}
-
-const myRating =
-  currentGroup.ratings.find(
-    (rating: Rating) =>
-      rating.userId === user?.id,
-  );
-
-if (myRating) {
-  setRating(myRating.value);
-}
+    if (myRating) {
+      setRating(myRating.value);
+    }
   }
-loadGroup();
-loadGroupRating();
+
   loadGroup();
-}, [groupId]);
+  loadGroupRating();
+
+}, [groupId, user]);
 
   async function sendMessage() {
 
@@ -296,28 +281,6 @@ async function finishRideRequest(
   loadRideRequests();
 }
 
-if (
-  user?.role === 'DRIVER' &&
-  !isMember
-) {
-  return (
-    <div className="app">
-
-      <h2>
-        Não pertence a este grupo.
-      </h2>
-
-      <button
-        onClick={() =>
-          navigate('/groups')
-        }
-      >
-        Voltar
-      </button>
-
-    </div>
-  );
-}
 
   return (
    <div className="chat-page">
@@ -406,10 +369,10 @@ if (
           )
         }
         onKeyDown={(e) => {
-    if (e.key === 'Enter') {
-      sendMessage();
-    }
-  }}
+  if (e.key === 'Enter') {
+    createRideRequest();
+  }
+}}
         placeholder="
 Descreva sua localização"
       />

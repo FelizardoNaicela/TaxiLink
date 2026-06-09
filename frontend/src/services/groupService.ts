@@ -120,3 +120,22 @@ export async function searchUsers(
 
   return response.data;
 }
+
+export async function getMyGroups() {
+
+  const token =
+    localStorage.getItem('token');
+
+  const response =
+    await axios.get(
+      'https://taxilink.onrender.com/groups/my-groups',
+      {
+        headers: {
+          Authorization:
+            `Bearer ${token}`,
+        },
+      },
+    );
+
+  return response.data;
+}

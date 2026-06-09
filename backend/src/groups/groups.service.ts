@@ -123,4 +123,24 @@ async isMember(
 
   return !!member;
 }
+
+async getMyGroups(
+  userId: number,
+) {
+  return this.prisma.group.findMany({
+    where: {
+      members: {
+        some: {
+          userId,
+        },
+      },
+    },
+
+    include: {
+      owner: true,
+      ratings: true,
+      favorites: true,
+    },
+  });
+}
 }

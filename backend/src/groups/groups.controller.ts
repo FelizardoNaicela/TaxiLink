@@ -91,5 +91,15 @@ isMember(
     request.user.id,
   );
 }
+
+@UseGuards(JwtAuthGuard)
+@Get('my-groups')
+getMyGroups(
+  @Req() request: any,
+) {
+  return this.groupsService.getMyGroups(
+    request.user.id,
+  );
+}
 }
 
