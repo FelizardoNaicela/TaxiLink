@@ -377,7 +377,11 @@ async function finishRideRequest(
 
 {showRequests && (
   <>
-  {user?.role === 'CLIENT' && (
+  {(
+  user?.role === 'CLIENT' ||
+  (user?.role === 'DRIVER' &&
+   !isMember)
+) && (
 
     <div>
 

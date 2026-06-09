@@ -71,6 +71,18 @@ const [users, setUsers] =
   const data =
     await searchUsers(search);
 
+    const filteredUsers =
+  data.filter(
+    (user: any) =>
+      user.role === 'DRIVER' &&
+      !members.some(
+        (member: any) =>
+          member.user.id === user.id,
+      ),
+  );
+
+setUsers(filteredUsers);
+
   setUsers(data);
 }
 
