@@ -27,7 +27,7 @@ const navigate =
   const [messages, setMessages] =
     useState<any[]>([]);
 
-    const { user, logout } =
+    const { user } =
   useAuth();
 
   const [group, setGroup] =
@@ -310,7 +310,7 @@ async function finishRideRequest(
     {group?.ownerId === user?.id && (
 
   <button
-  className="member-remove-btn"
+  className="logout-btn"
     onClick={() =>
       navigate(
         `/groups/${group?.id}/members`,
@@ -347,11 +347,6 @@ async function finishRideRequest(
     )}
   </div>
 </div>
-
-  <button onClick={logout}
-  className="logout-btn">
-    Sair
-  </button>
 </div>
 
 
