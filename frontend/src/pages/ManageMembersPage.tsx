@@ -117,24 +117,24 @@ async function handleAddMember(
   Membros do Grupo
 </h2>
 
-<div
-  style={{
-    marginBottom: 20,
-  }}
->
+<div className="members-search">
 
   <input
+    className="search-input"
     value={search}
     onChange={(e) =>
-      setSearch(
-        e.target.value,
-      )
+      setSearch(e.target.value)
     }
-    placeholder="
-Pesquisar por nome, email ou telefone"
+    onKeyDown={(e) => {
+      if (e.key === 'Enter') {
+        handleSearch();
+      }
+    }}
+    placeholder="🔍 Procurar taxistas..."
   />
 
   <button
+    className="filter-btn active-filter"
     onClick={handleSearch}
   >
     Pesquisar
@@ -142,38 +142,47 @@ Pesquisar por nome, email ou telefone"
 
 </div>
 
-{users.map((user) => (
-
-  <div
-    key={user.id}
-    className="group-card"
-  >
-
+{users.length > 0 && (
+  <>
     <h3>
-      {user.name}
+      Resultados da Pesquisa
     </h3>
 
-    <p>
-      {user.email}
-    </p>
+    <div className="groups">
+      {users.map((user) => (
 
-    <p>
-      {user.phone}
-    </p>
+        <div
+          key={user.id}
+          className="group-card"
+        >
 
-    <button
-      onClick={() =>
-        handleAddMember(
-          user.id,
-        )
-      }
-    >
-      Adicionar
-    </button>
+          <h3>{user.name}</h3>
 
-  </div>
+          <p>{user.email}</p>
 
-))}
+          <p>{user.phone}</p>
+
+          <button
+            className="member-add-btn"
+            onClick={() =>
+              handleAddMember(user.id)
+            }
+          >
+            + Adicionar
+          </button>
+
+        </div>
+
+      ))}
+    </div>
+  </>
+)}
+
+<h3>
+  Membros do Grupo
+</h3>
+
+<div className="groups"></div>
 
       {members.map(
         (member) => (
@@ -199,14 +208,15 @@ Pesquisar por nome, email ou telefone"
               'OWNER' && (
 
               <button
-                onClick={() =>
-                  handleRemove(
-                    member.user.id,
-                  )
-                }
-              >
-                Remover
-              </button>
+  className="member-remove-btn"
+  onClick={() =>
+    handleRemove(
+      member.user.id,
+    )
+  }
+>
+  Remover
+</button>
 
             )}
 

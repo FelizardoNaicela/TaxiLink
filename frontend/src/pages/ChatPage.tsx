@@ -310,6 +310,7 @@ async function finishRideRequest(
     {group?.ownerId === user?.id && (
 
   <button
+  className="member-remove-btn"
     onClick={() =>
       navigate(
         `/groups/${group?.id}/members`,
