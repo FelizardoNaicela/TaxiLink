@@ -596,16 +596,9 @@ body {
   }
 }
 
-.groups-sticky-header {
+.page-header {
   position: sticky;
   top: 0;
-
-  background: #fcfcfc;
-
   z-index: 100;
-
-  padding-top: 10px;
-  padding-bottom: 10px;
-
-  border-bottom: 1px solid #eee;
+  background: #fcfcfc;
 }
