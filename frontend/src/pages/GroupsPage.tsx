@@ -229,7 +229,8 @@ function GroupsPage() {
           </button>
         )}
 
-      </div>
+         </div>
+
       </div>
 
       {user?.role === 'DRIVER' && (
@@ -262,9 +263,9 @@ function GroupsPage() {
             Explorar
           </button>
 
-      )}
+        </div>
 
-      </div>
+      )}
       
 
       <input
