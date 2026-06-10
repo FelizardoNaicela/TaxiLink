@@ -230,6 +230,7 @@ function GroupsPage() {
         )}
 
       </div>
+      </div>
 
       {user?.role === 'DRIVER' && (
 
@@ -260,8 +261,6 @@ function GroupsPage() {
           >
             Explorar
           </button>
-
-        </div>
 
       )}
 
