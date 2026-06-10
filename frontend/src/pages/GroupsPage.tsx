@@ -201,6 +201,7 @@ function GroupsPage() {
 
   return (
     <div className="app">
+      <div className="groups-sticky-header">
 
       <div className="page-header">
 
@@ -356,6 +357,7 @@ function GroupsPage() {
         </button>
 
       </div>
+      
 
       <hr />
 
@@ -387,6 +389,7 @@ function GroupsPage() {
           ),
         )}
 
+      </div>
       </div>
 
       <h3>

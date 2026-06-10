@@ -595,3 +595,17 @@ body {
     width: 100%;
   }
 }
+
+.groups-sticky-header {
+  position: sticky;
+  top: 0;
+
+  background: #fcfcfc;
+
+  z-index: 100;
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  border-bottom: 1px solid #eee;
+}
