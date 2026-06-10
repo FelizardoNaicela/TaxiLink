@@ -265,6 +265,9 @@ function GroupsPage() {
 
       )}
 
+      </div>
+      
+
       <input
         className="search-input"
         type="text"
@@ -362,8 +365,6 @@ function GroupsPage() {
         )}
 
       </div>
-
-    </div>
 
     <div className="groups-content">
 
