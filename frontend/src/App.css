@@ -595,10 +595,21 @@ body {
     width: 100%;
   }
 }
-
-.page-header {
+.groups-sticky-header {
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
+
   background: #fcfcfc;
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  box-shadow:
+    0 2px 8px
+    rgba(0, 0, 0, 0.08);
+}
+
+.groups-content {
+  padding-top: 15px;
 }

@@ -200,21 +200,15 @@ function GroupsPage() {
       : filteredGroups;
 
   return (
-    <div className="app">
-      <div className="groups-sticky-header">
+  <div className="app">
+
+    <div className="groups-sticky-header">
 
       <div className="page-header">
 
         <div>
-
-          <h2>
-            TaxiLink
-          </h2>
-
-          <p>
-            {user?.email}
-          </p>
-
+          <h2>TaxiLink</h2>
+          <p>{user?.email}</p>
         </div>
 
         <button
@@ -224,26 +218,20 @@ function GroupsPage() {
           Sair
         </button>
 
-        {user?.role ===
-          'DRIVER' && (
-
+        {user?.role === 'DRIVER' && (
           <button
             className="create-group-btn"
             onClick={() =>
-              navigate(
-                '/groups/create',
-              )
+              navigate('/groups/create')
             }
           >
             + Criar Grupo
           </button>
-
         )}
 
       </div>
 
-      {user?.role ===
-        'DRIVER' && (
+      {user?.role === 'DRIVER' && (
 
         <div className="filters">
 
@@ -254,9 +242,7 @@ function GroupsPage() {
                 : ''
             }
             onClick={() =>
-              setShowMyGroups(
-                true,
-              )
+              setShowMyGroups(true)
             }
           >
             Meus Grupos
@@ -269,9 +255,7 @@ function GroupsPage() {
                 : ''
             }
             onClick={() =>
-              setShowMyGroups(
-                false,
-              )
+              setShowMyGroups(false)
             }
           >
             Explorar
@@ -287,9 +271,7 @@ function GroupsPage() {
         placeholder="🔍 Pesquisar grupo ou região..."
         value={search}
         onChange={(e) =>
-          setSearch(
-            e.target.value,
-          )
+          setSearch(e.target.value)
         }
       />
 
@@ -317,9 +299,7 @@ function GroupsPage() {
               : ''
           }
           onClick={() =>
-            setFilter(
-              'TAXI',
-            )
+            setFilter('TAXI')
           }
         >
           Táxi
@@ -332,9 +312,7 @@ function GroupsPage() {
               : ''
           }
           onClick={() =>
-            setFilter(
-              'MOTO',
-            )
+            setFilter('MOTO')
           }
         >
           Moto
@@ -342,22 +320,18 @@ function GroupsPage() {
 
         <button
           className={
-            filter ===
-            'TXOPELA'
+            filter === 'TXOPELA'
               ? 'active-filter'
               : ''
           }
           onClick={() =>
-            setFilter(
-              'TXOPELA',
-            )
+            setFilter('TXOPELA')
           }
         >
           Txopela
         </button>
 
       </div>
-      
 
       <hr />
 
@@ -369,8 +343,7 @@ function GroupsPage() {
             <button
               key={province}
               className={
-                provinceFilter ===
-                province
+                provinceFilter === province
                   ? 'active-region'
                   : ''
               }
@@ -380,8 +353,7 @@ function GroupsPage() {
                 )
               }
             >
-              {province ===
-              'ALL'
+              {province === 'ALL'
                 ? 'Todas Províncias'
                 : province}
             </button>
@@ -390,33 +362,29 @@ function GroupsPage() {
         )}
 
       </div>
-      </div>
+
+    </div>
+
+    <div className="groups-content">
 
       <h3>
         {showMyGroups &&
-        user?.role ===
-          'DRIVER'
+        user?.role === 'DRIVER'
           ? 'Meus Grupos'
           : 'Grupos Disponíveis'}
       </h3>
 
       {loading ? (
 
-        <p>
-          Carregando grupos...
-        </p>
+        <p>Carregando grupos...</p>
 
       ) : (
 
         <>
-          {groupsToShow.length ===
-            0 && (
-
+          {groupsToShow.length === 0 && (
             <p>
-              Nenhum grupo
-              encontrado.
+              Nenhum grupo encontrado.
             </p>
-
           )}
 
           <div className="groups">
@@ -438,7 +406,9 @@ function GroupsPage() {
       )}
 
     </div>
-  );
+
+  </div>
+);
 }
 
 export default GroupsPage;
